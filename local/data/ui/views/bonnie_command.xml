@@ -1,0 +1,140 @@
+<form script="bonnie_link.js,iterm_link.js">
+  <label>Bonnie++ Resources</label>
+  <fieldset submitButton="false">
+    <input type="text" token="path" searchWhenChanged="true">
+      <label>Path to your data partition</label>
+      <default>/splunk/data/hot_warm</default>
+      <initialValue>/splunk/data/hot_warm</initialValue>
+    </input>
+    <input type="dropdown" token="ram" searchWhenChanged="true">
+      <label>Indexers RAM in GB</label>
+      <choice value="16">16</choice>
+      <choice value="32">32</choice>
+      <choice value="64">64</choice>
+      <choice value="128">128</choice>
+      <default>16</default>
+      <initialValue>16</initialValue>
+    </input>
+    <input type="text" token="output" searchWhenChanged="true">
+      <label>Full Path To Your Output</label>
+      <default>/full/path/to/your/output</default>
+      <initialValue>/full/path/to/your/output</initialValue>
+    </input>
+    <input type="text" token="index" searchWhenChanged="true">
+      <label>Destination Index</label>
+      <default>bonnie</default>
+      <initialValue>bonnie</initialValue>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <table id="link">
+        <search>
+          <query>index=*               | eval ram=$ram$*1024*5              | eval cmd="bonnie++ -d " + "$path$" + " -s " + 'ram' + " -u root:root -fq -n 50 &gt;&gt; $output$"              | dedup cmd                  | eval referer="http://sourceforge.net/projects/bonnie/"                           | dedup referer                            | eval link=referer                    | eval iTerm="https://www.iterm2.com/downloads.html"                    | table link iTerm cmd             | rename cmd AS "Copy &amp; Paste Customized Command", link as Bonnie++</query>
+          <earliest>-1m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">none</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <html>
+      <h1>How to run Bonnie++ and configure this App:</h1>
+        <ol>
+          <p>
+            <li>Install Bonnie++ on all of your indexers, use the link above to get the bits.</li>
+          </p>
+          
+          <p>
+            <li>The form above will create your custom command syntax, following this example logic:</li>
+          </p>
+          <p>
+            <dd>
+              <ol>
+                <p>bonnie++ -d SHAREPATH -s SIZE -u root:root -fq -n 50 &gt;&gt; $output$ </p>
+                <ol>
+                  <p>Where SHAREPATH is path to location where Splunk index data will be stored:</p>
+                  <ol>
+                    <p>/data/splunk/hot_warm/</p>
+                  </ol>
+                </ol>
+                <ol>
+                  <p>and SIZE is the amount of ram in MB * 5, with a 16 GB Minimum:</p> 
+                  <ol>
+                    <p>16GB of ram * 1024MB / GB * 5 = 81,920</p>
+                  </ol>
+                </ol>
+              </ol>
+            </dd>
+          </p> 
+          
+          <p>
+            <li>Prepare Splunk to gather the command output:</li>
+          </p>
+          
+          <p>
+            <dd>
+              <ol>
+                <p>The easiest way to do this is to monitor the output with Splunk.  Add the following form generated code to inputs.conf on all of your indexers:</p>
+                
+                <ol>
+                  <pre><code>
+                    <p>[monitor://$output$]</p>
+                    <p>sourcetype = bonnie</p>
+                    <p>index = $index$</p>    
+                    
+                    </code></pre>
+                  
+                </ol>
+              </ol>
+            </dd>
+          </p> 
+          
+          <p>
+            <dd>
+              <ol>
+                <p>However, you can manually collect the data and manually upload it into Splunk if you would like to.</p>
+              </ol>
+            </dd>
+          </p>
+          
+          <p>
+            <li>Stop Splunk:</li>
+          </p>
+          <p>
+            <dd>
+              <ol>
+                <p>After gathering all of the above information, stop Splunk on all of your indexers.</p>
+              </ol>
+            </dd>
+          </p>
+          
+          <p>
+            <li>Run the command:</li>
+          </p>
+          <p>
+            <dd>
+              <ol>
+                <p>This test needs to simultaneously run on all of your indexers.  One method to do this is by leveraging the “Broadcast Input” feature in iTerm when logged into each indexer. Then copy and Paste the form driven command from the table above.</p>
+              </ol>
+            </dd>
+          </p>
+          <p>
+            <li>Review the Results:</li>
+          </p>
+          <p>
+            <dd>
+              <ol>
+                <p>After the commands have completed (it takes a long time), you can review your results in the "Bonnie++ Analysis" dashboard.</p>
+              </ol>
+            </dd>
+          </p>
+        </ol>
+    </html>
+  </row>
+</form>

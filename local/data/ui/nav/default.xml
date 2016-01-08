@@ -1,0 +1,6 @@
+<nav search_view="search" color="#65A637">
+  <view name="bonnie_command" default='true'/>
+  <view name="bonnie"  />
+  <view name="search" />
+  <view name="dashboards" />
+</nav>

@@ -1,0 +1,37 @@
+[app/ui]
+version = 6.3.1
+modtime = 1452193373.994953000
+
+[app/launcher]
+version = 6.3.1
+modtime = 1452193373.999050000
+
+[props/bonnie/EXTRACT-bonnie]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = admin
+version = 6.3.1
+modtime = 1452197602.639510000
+
+[views/bonnie]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = admin
+version = 6.3.1
+modtime = 1452227778.088530000
+
+[nav/default]
+version = 6.3.1
+modtime = 1452225639.585223000
+
+[views/bonnie_results_analysis_clone]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = admin
+version = 6.3.1
+modtime = 1452197923.265976000
+
+[views/bonnie_command]
+owner = admin
+version = 6.3.1
+modtime = 1452227804.694659000
