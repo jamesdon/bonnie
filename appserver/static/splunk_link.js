@@ -8,12 +8,12 @@ require([
 
     var CustomLinkRenderer = TableView.BaseCellRenderer.extend({
         canRender: function(cell) {
-            return cell.field === 'Bonnie++';
+            return cell.field === 'Splunk Doc';
         },
         render: function($td, cell) {
             var link = cell.value;
 
-            var a = $('<a>').attr("href", cell.value).text("Bonnie++ Bits");
+            var a = $('<a>').attr("href", cell.value).text("Splunk Reference Hardware");
 
             $td.addClass('table-link').empty().append(a);
                               

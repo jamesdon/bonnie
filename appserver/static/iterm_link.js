@@ -13,7 +13,7 @@ require([
         render: function($td, cell) {
             var link = cell.value;
 
-            var a = $('<a>').attr("href", cell.value).text("Link to iTerm Bits");
+            var a = $('<a>').attr("href", cell.value).text("iTerm Bits");
 
             $td.addClass('table-link').empty().append(a);
                               

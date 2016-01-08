@@ -1,4 +1,4 @@
-<form script="bonnie_link.js,iterm_link.js">
+<form script="bonnie_link.js,iterm_link.js,splunk_link.js">
   <label>Bonnie++ Resources</label>
   <fieldset submitButton="false">
     <input type="text" token="path" searchWhenChanged="true">
@@ -8,6 +8,7 @@
     </input>
     <input type="dropdown" token="ram" searchWhenChanged="true">
       <label>Indexers RAM in GB</label>
+      <choice value="12">12</choice>
       <choice value="16">16</choice>
       <choice value="32">32</choice>
       <choice value="64">64</choice>
@@ -30,7 +31,7 @@
     <panel>
       <table id="link">
         <search>
-          <query>index=*               | eval ram=$ram$*1024*5              | eval cmd="bonnie++ -d " + "$path$" + " -s " + 'ram' + " -u root:root -fq -n 50 &gt;&gt; $output$"              | dedup cmd                  | eval referer="http://sourceforge.net/projects/bonnie/"                           | dedup referer                            | eval link=referer                    | eval iTerm="https://www.iterm2.com/downloads.html"                    | table link iTerm cmd             | rename cmd AS "Copy &amp; Paste Customized Command", link as Bonnie++</query>
+          <query>index=*                            | eval ram=$ram$*1024*5                           | eval cmd="bonnie++ -d " + "$path$" + " -s " + 'ram' + " -u root:root -fq -n 50 &gt;&gt; $output$; echo path=$path$  &gt;&gt; $output$"                  | dedup cmd                             | eval referer="http://sourceforge.net/projects/bonnie/"                                     | dedup referer                          | eval link=referer                | eval iTerm="https://www.iterm2.com/downloads.html"               | eval "Splunk Doc"="http://docs.splunk.com/Documentation/Splunk/latest/Capacity/Referencehardware"             | table link iTerm "Splunk Doc" cmd                       | rename cmd AS "Copy &amp; Paste Customized Command", link as Bonnie++</query>
           <earliest>-1m</earliest>
           <latest>now</latest>
         </search>
@@ -64,9 +65,9 @@
                   </ol>
                 </ol>
                 <ol>
-                  <p>and SIZE is the amount of ram in MB * 5, with a 16 GB Minimum:</p> 
+                  <p>and SIZE is the amount of ram in MB * 5, with a 12 GB Minimum:</p> 
                   <ol>
-                    <p>16GB of ram * 1024MB / GB * 5 = 81,920</p>
+                    <p>12 GB of RAM * 1024 MB/GB * 5 = 61,440</p>
                   </ol>
                 </ol>
               </ol>
@@ -83,12 +84,14 @@
                 <p>The easiest way to do this is to monitor the output with Splunk.  Add the following form generated code to inputs.conf on all of your indexers:</p>
                 
                 <ol>
-                  <pre><code>
+                  <pre>
+                  <code>
                     <p>[monitor://$output$]</p>
                     <p>sourcetype = bonnie</p>
                     <p>index = $index$</p>    
                     
-                    </code></pre>
+                    </code>
+                </pre>
                   
                 </ol>
               </ol>
@@ -120,7 +123,7 @@
           <p>
             <dd>
               <ol>
-                <p>This test needs to simultaneously run on all of your indexers.  One method to do this is by leveraging the “Broadcast Input” feature in iTerm when logged into each indexer. Then copy and Paste the form driven command from the table above.</p>
+                <p>This test needs to simultaneously run on all of your indexers.  One method to do this is by leveraging the “Broadcast Input” feature in iTerm when logged into each indexer. Then copy and paste the form driven command in the table above.</p>
               </ol>
             </dd>
           </p>
@@ -131,6 +134,13 @@
             <dd>
               <ol>
                 <p>After the commands have completed (it takes a long time), you can review your results in the "Bonnie++ Analysis" dashboard.</p>
+              </ol>
+            </dd>
+          </p>
+          <p>
+            <dd>
+              <ol>
+                <p>Review the latest "Splunk Reference Hardware" documentation to determine if any further tuning is required.</p>
               </ol>
             </dd>
           </p>
