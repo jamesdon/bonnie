@@ -31,7 +31,7 @@
     <panel>
       <table id="link">
         <search>
-          <query>index=*                            | eval ram=$ram$*1024*5                           | eval cmd="bonnie++ -d " + "$path$" + " -s " + 'ram' + " -u root:root -fq -n 50 &gt;&gt; $output$; echo path=$path$  &gt;&gt; $output$"                  | dedup cmd                             | eval referer="http://sourceforge.net/projects/bonnie/"                                     | dedup referer                          | eval link=referer                | eval iTerm="https://www.iterm2.com/downloads.html"               | eval "Splunk Doc"="http://docs.splunk.com/Documentation/Splunk/latest/Capacity/Referencehardware"             | table link iTerm "Splunk Doc" cmd                       | rename cmd AS "Copy &amp; Paste Customized Command", link as Bonnie++</query>
+          <query>index=*                            | eval ram=$ram$*1024*5                           | eval cmd="bonnie++ -d " + "$path$" + " -s " + 'ram' + " -u root:root -fq -n 50 &gt;&gt; $output$; echo path=\"$path$\"  &gt;&gt; $output$"                  | dedup cmd                             | eval referer="http://sourceforge.net/projects/bonnie/"                                     | dedup referer                          | eval link=referer                | eval iTerm="https://www.iterm2.com/downloads.html"               | eval "Splunk Doc"="http://docs.splunk.com/Documentation/Splunk/latest/Capacity/Referencehardware"             | table link iTerm "Splunk Doc" cmd                       | rename cmd AS "Copy &amp; Paste Customized Command", link as Bonnie++</query>
           <earliest>-1m</earliest>
           <latest>now</latest>
         </search>
